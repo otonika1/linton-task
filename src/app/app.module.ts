@@ -9,13 +9,18 @@ import { AppComponent } from './app.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QuestionsComponent } from './questions/questions.component';
+import { StartComponent } from './start/start.component';
+import { ResultsComponent } from './results/results.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     QuestionsComponent,
-    
+    StartComponent,
+    ResultsComponent,
+   
 
   ],
   imports: [
@@ -25,7 +30,8 @@ import { QuestionsComponent } from './questions/questions.component';
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

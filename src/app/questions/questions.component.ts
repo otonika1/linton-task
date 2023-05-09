@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionsService } from '../questions.service';
 import { NgForm } from '@angular/forms';
+import { ResultsService } from '../results.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-questions',
@@ -16,7 +18,7 @@ export class QuestionsComponent implements OnInit {
   selectedValue:any
   answers:any[] = [];
   score:number = 0;
-  constructor(private service:QuestionsService) { }
+  constructor(private service:QuestionsService, private result:ResultsService,private router:Router) { }
 
   ngOnInit(): void {
     this.getQuestions();
@@ -27,7 +29,7 @@ export class QuestionsComponent implements OnInit {
   }
   getQuestions(){
     this.service.getQuestions().subscribe((res:any) => {
-      console.log(res);
+
       this.questions = res
       res.length
       this.widthOfOneSection = 100 / res.length
@@ -52,13 +54,13 @@ export class QuestionsComponent implements OnInit {
   }
   save(){
     this.answers.push(this.selectedValue)
-    console.log(this.answers);
     for(let i=0; i <= this.answers.length-1; i++) {      
-      if(this.answers[i]?.answerId == this.answers[i]?.correctAnswer){
+      if(this.answers[i]?.answerId == this.answers[i]?.correctAnswer && (this.answers[i]?.answerId != undefined || null)){
         this.score++;
       }
     }
-    console.log(this.score);
+    this.result.result = {len:this.answers.length, score:this.score}
+    this.router.navigate(["Results"])
   }
   timeLeft: number = 60;
   interval:any;
@@ -69,6 +71,8 @@ startTimer() {
         this.timeLeft--;
       } else {
         this.timeLeft = 0;
+        this.save();
+        clearTimeout(this.interval);
       }
     },1000)
     
