@@ -25,6 +25,7 @@ import { QuestionsComponent } from './questions/questions.component';
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,10 +1,12 @@
 <div class="container">
     <div class="mt-4">
         <div class="d-flex justify-content-end">
-            <span>
-                Time:50
+            Time:
+            <span [ngClass]="timeLeft <= 15 ? 'text-danger' : ''">
+                {{timeLeft}}
             </span>
         </div>
+        
         <div class="quiz border rounded">
             
             <div class="header">
@@ -14,35 +16,40 @@
                     </span>
                 </div>
                 <div class="progress">
-                    <div class="progress-bar w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar " role="progressbar" [ngStyle]="{'width.%':width}"></div>
                 </div>
             </div>
+            
             <div class="body" *ngFor="let i of questions; let ind = index">
                 <div *ngIf="ind == count">
                     <div class="questions p-4 border-bottom fw-bold">
                         <span>{{i.title}}</span>
                     </div>
-                    <ng-container *ngFor="let k of i.options">
+                    <ng-container *ngFor="let k of i.options; let inx = index">
                         <div class="answers px-4 p-2 mt-2 border-bottom" >
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" >
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                    {{k.name}}
-                                </label>
-                              </div>
+                            
+                                <div class="form-check"  >
+                                    <input class="form-check-input" type="radio" [(ngModel)]="selectedValue" [value]="{questionId:i.id,answerId:k.id,name:k.name,correctAnswer:i.correctOptionId}">
+                                    <label class="form-check-label">
+                                        {{k.name}}
+                                    </label>
+                                  </div>
+                                  
                             
                         </div>
                     </ng-container>
+                    
                 </div>
             </div>
         </div>
         <div class="d-flex justify-content-between">
             <div class="p-2">
-                <button class="btn btn-outline-primary me-2" (click)="prev()">Previous</button>
-                <button class="btn btn-outline-primary me-2" (click)="next()">Next</button>
+                <button class="btn btn-outline-primary me-2" *ngIf="count > 0" (click)="prev()">Previous</button>
+                <button class="btn btn-outline-primary me-2" *ngIf="count < 2" (click)="next()">Next</button>
+                <button class="btn btn-outline-primary me-2" *ngIf="count == 2" (click)="save()">Submit</button>
             </div>
             <div class="p-2">
-                <button class="btn btn-primary me-2">Exit</button>
+                <button class="btn btn-primary me-2" >Exit</button>
                 
             </div>
         </div>
